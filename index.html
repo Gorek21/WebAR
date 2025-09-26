@@ -8,31 +8,61 @@
       body {
         margin: 0;
         background: #000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
+        overflow: hidden;
       }
       model-viewer {
         width: 100%;
         height: 100%;
       }
+      /* AR-Button zentral */
       button[slot="ar-button"] {
         position: absolute;
-        bottom: 16px;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
         background: #fff;
         color: #000;
         border: none;
-        padding: 12px 24px;
-        font-size: 16px;
-        border-radius: 8px;
+        padding: 16px 28px;
+        font-size: 18px;
+        border-radius: 10px;
         cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        z-index: 2;
+      }
+
+      /* Orbit-Container für die Bilder */
+      .orbit-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        margin-left: -150px;
+        margin-top: -150px;
+        border-radius: 50%;
+        animation: spin 20s linear infinite;
+        z-index: 1;
+      }
+      .orbit-container img {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+      }
+      .orbit-container img:nth-child(1) { top: 0; left: 120px; }
+      .orbit-container img:nth-child(2) { top: 120px; right: 0; }
+      .orbit-container img:nth-child(3) { bottom: 0; left: 120px; }
+      .orbit-container img:nth-child(4) { top: 120px; left: 0; }
+
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
     </style>
   </head>
   <body>
+    <!-- Dein 3D Modell -->
     <model-viewer
       src="model.glb"
       ios-src="model.usdz"
@@ -42,8 +72,15 @@
       auto-rotate
       shadow-intensity="1"
       poster="">
-
-      <button slot="ar-button">In AR ansehen</button>
+      <button slot="ar-button">📱 In AR ansehen</button>
     </model-viewer>
+
+    <!-- Orbitierende Bilder -->
+    <div class="orbit-container">
+      <img src="bild1.png" alt="Bild 1">
+      <img src="bild2.png" alt="Bild 2">
+      <img src="bild3.png" alt="Bild 3">
+      <img src="bild4.png" alt="Bild 4">
+    </div>
   </body>
 </html>
