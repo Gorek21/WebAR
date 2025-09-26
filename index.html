@@ -1,86 +1,49 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8">
-    <title>Mein AR-Projekt</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        background: #000;
-        height: 100vh;
-        overflow: hidden;
-      }
-      model-viewer {
-        width: 100%;
-        height: 100%;
-      }
-      /* AR-Button zentral */
-      button[slot="ar-button"] {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff;
-        color: #000;
-        border: none;
-        padding: 16px 28px;
-        font-size: 18px;
-        border-radius: 10px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        z-index: 2;
-      }
+<head>
+  <meta charset="UTF-8">
+  <title>AR Projekt Szenenablauf</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-      /* Orbit-Container für die Bilder */
-      .orbit-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 300px;
-        height: 300px;
-        margin-left: -150px;
-        margin-top: -150px;
-        border-radius: 50%;
-        animation: spin 20s linear infinite;
-        z-index: 1;
-      }
-      .orbit-container img {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-      }
-      .orbit-container img:nth-child(1) { top: 0; left: 120px; }
-      .orbit-container img:nth-child(2) { top: 120px; right: 0; }
-      .orbit-container img:nth-child(3) { bottom: 0; left: 120px; }
-      .orbit-container img:nth-child(4) { top: 120px; left: 0; }
-
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Dein 3D Modell -->
-    <model-viewer
-      src="model.glb"
-      ios-src="model.usdz"
-      ar
-      ar-modes="scene-viewer quick-look webxr"
-      camera-controls
-      auto-rotate
-      shadow-intensity="1"
-      poster="">
+  <!-- Scene 1: AR Button -->
+  <div id="scene1" class="scene active">
+    <model-viewer src="model.glb" ios-src="model.usdz" ar ar-modes="scene-viewer quick-look webxr">
       <button slot="ar-button">📱 In AR ansehen</button>
     </model-viewer>
+  </div>
 
-    <!-- Orbitierende Bilder -->
-    <div class="orbit-container">
-      <img src="bild1.png" alt="Bild 1">
-      <img src="bild2.png" alt="Bild 2">
-      <img src="bild3.png" alt="Bild 3">
-      <img src="bild4.png" alt="Bild 4">
+  <!-- Scene 2: Logo -->
+  <div id="scene2" class="scene">
+    <img src="Impact.png" alt="Logo" class="logo">
+  </div>
+
+  <!-- Scene 3: Video + Text -->
+  <div id="scene3" class="scene">
+    <div class="scene3-content">
+      <video id="scene3video" src="video.mp4" controls autoplay></video>
+      <div class="info">
+        <img src="MaltaTransparent.png" alt="Grafik">
+        <p>Dein Beschreibungstext zum Video</p>
+      </div>
     </div>
-  </body>
+  </div>
+
+  <!-- Scene 4: Orbit-Animation -->
+  <div id="scene4" class="scene">
+    <div class="orbit-wrapper">
+      <img src="Impact.png" alt="Zentrales Logo" class="logo">
+      <div class="orbit-container">
+        <img src="bild1.png" alt="Bild 1">
+        <img src="bild2.png" alt="Bild 2">
+        <img src="bild3.png" alt="Bild 3">
+        <img src="bild4.png" alt="Bild 4">
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
