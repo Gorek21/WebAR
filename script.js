@@ -1,29 +1,53 @@
-const scenes = ["scene1","scene2","scene3","scene4"];
+const scenes = ["sceneImpact", "sceneVideo", "sceneOrbit", "sceneInfo"];
 let current = 0;
 
-function showScene(id) {
-  scenes.forEach(s => document.getElementById(s).classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+// Präsentation starten, wenn AR läuft und Button gedrückt wird
+document.querySelector("model-viewer").addEventListener("ar-status", (event) => {
+  if (event.detail.status === "session-started") {
+    console.log("AR Session läuft, warte auf Button...");
+  }
+});
 
-// Ablaufsteuerung
-setTimeout(() => {
-  current = 1;
-  showScene(scenes[current]);
-  // Scene 2 → nach 5s weiter
+document.getElementById("startButton").addEventListener("click", () => {
+  const viewer = document.querySelector("model-viewer");
+
+  // Sicherstellen, dass AR läuft
+  if (viewer.arStatus === "session-started") {
+    startPresentation();
+  } else {
+    viewer.addEventListener("ar-status", (event) => {
+      if (event.detail.status === "session-started") {
+        startPresentation();
+      }
+    }, { once: true });
+  }
+});
+
+function startPresentation() {
+  console.log("Präsentation startet...");
+
+  // Scene 2: Impact Logo
+  showScene("sceneImpact");
   setTimeout(() => {
-    current = 2;
-    showScene(scenes[current]);
-    const vid = document.getElementById("scene3video");
+    // Scene 3: Video
+    showScene("sceneVideo");
+    const vid = document.getElementById("video");
+    vid.play();
     vid.onended = () => {
       setTimeout(() => {
-        current = 3;
-        showScene(scenes[current]);
-        // Scene 4 → nach 15s automatisch Ende
+        // Scene 4: Orbit Logos
+        showScene("sceneOrbit");
         setTimeout(() => {
-          alert("Ablauf beendet – hier kommt Scene 5 hin.");
+          // Scene 5: Final Info
+          showScene("sceneInfo");
+          console.log("Präsentation beendet.");
         }, 15000);
-      }, 5000);
+      }, 3000);
     };
   }, 5000);
-}, 3000);
+}
+
+function showScene(id) {
+  scenes.forEach(s => document.getElementById(s).style.display = "none");
+  document.getElementById(id).style.display = "block";
+}
