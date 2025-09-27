@@ -1,21 +1,34 @@
 const scenes = ["scene1", "scene2", "scene3", "scene4"];
 let current = 0;
+const viewer = document.getElementById("viewer");
+const startBtn = document.getElementById("startButton");
 
-// Präsentation starten, wenn AR läuft und Button gedrückt wird
-document.getElementById("startButton").addEventListener("click", () => {
-  const viewer = document.getElementById("viewer");
+// Prüfen, ob AR unterstützt wird
+const arSupported = 'xr' in navigator || viewer.canActivateAR;
 
-  // Prüfen ob AR-Session läuft
-  if (viewer.arStatus === "session-started") {
+if (arSupported) {
+  console.log("AR-Unterstützung erkannt.");
+
+  // Präsentation starten, wenn Button gedrückt wird und AR läuft
+  startBtn.addEventListener("click", () => {
+    if (viewer.arStatus === "session-started") {
+      startPresentation();
+    } else {
+      viewer.addEventListener("ar-status", (event) => {
+        if (event.detail.status === "session-started") {
+          startPresentation();
+        }
+      }, { once: true });
+    }
+  });
+} else {
+  console.log("Kein AR verfügbar – Fallback auf Desktop-Version.");
+
+  // Button bleibt sichtbar, startet Präsentation sofort ohne AR
+  startBtn.addEventListener("click", () => {
     startPresentation();
-  } else {
-    viewer.addEventListener("ar-status", (event) => {
-      if (event.detail.status === "session-started") {
-        startPresentation();
-      }
-    }, { once: true });
-  }
-});
+  });
+}
 
 function startPresentation() {
   console.log("Präsentation startet...");
@@ -33,7 +46,7 @@ function startPresentation() {
         showScene("scene4");
         setTimeout(() => {
           console.log("Präsentation beendet.");
-          // hier kannst du Scene 5 ergänzen
+          // Scene 5 hier ergänzen
         }, 15000);
       }, 3000);
     };
