@@ -10,8 +10,8 @@
 
   <!-- Scene 1: AR Button -->
   <div id="scene1" class="scene active">
-    <model-viewer src="model.glb" ios-src="model.usdz" ar ar-modes="scene-viewer quick-look webxr">
-      <button slot="ar-button">📱 In AR ansehen</button>
+    <model-viewer id="viewer" src="model.glb" ios-src="model.usdz" ar ar-modes="scene-viewer quick-look webxr">
+      <button id="startButton" slot="ar-button">📱 Präsentation starten</button>
     </model-viewer>
   </div>
 
@@ -23,7 +23,7 @@
   <!-- Scene 3: Video + Text -->
   <div id="scene3" class="scene">
     <div class="scene3-content">
-      <video id="scene3video" src="video.mp4" controls autoplay></video>
+      <video id="scene3video" src="video.mp4" controls></video>
       <div class="info">
         <img src="MaltaTransparent.png" alt="Grafik">
         <p>Dein Beschreibungstext zum Video</p>

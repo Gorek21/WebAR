@@ -1,17 +1,11 @@
-const scenes = ["sceneImpact", "sceneVideo", "sceneOrbit", "sceneInfo"];
+const scenes = ["scene1", "scene2", "scene3", "scene4"];
 let current = 0;
 
 // Präsentation starten, wenn AR läuft und Button gedrückt wird
-document.querySelector("model-viewer").addEventListener("ar-status", (event) => {
-  if (event.detail.status === "session-started") {
-    console.log("AR Session läuft, warte auf Button...");
-  }
-});
-
 document.getElementById("startButton").addEventListener("click", () => {
-  const viewer = document.querySelector("model-viewer");
+  const viewer = document.getElementById("viewer");
 
-  // Sicherstellen, dass AR läuft
+  // Prüfen ob AR-Session läuft
   if (viewer.arStatus === "session-started") {
     startPresentation();
   } else {
@@ -27,20 +21,19 @@ function startPresentation() {
   console.log("Präsentation startet...");
 
   // Scene 2: Impact Logo
-  showScene("sceneImpact");
+  showScene("scene2");
   setTimeout(() => {
     // Scene 3: Video
-    showScene("sceneVideo");
-    const vid = document.getElementById("video");
+    showScene("scene3");
+    const vid = document.getElementById("scene3video");
     vid.play();
     vid.onended = () => {
       setTimeout(() => {
         // Scene 4: Orbit Logos
-        showScene("sceneOrbit");
+        showScene("scene4");
         setTimeout(() => {
-          // Scene 5: Final Info
-          showScene("sceneInfo");
           console.log("Präsentation beendet.");
+          // hier kannst du Scene 5 ergänzen
         }, 15000);
       }, 3000);
     };
@@ -48,6 +41,8 @@ function startPresentation() {
 }
 
 function showScene(id) {
-  scenes.forEach(s => document.getElementById(s).style.display = "none");
-  document.getElementById(id).style.display = "block";
+  scenes.forEach(s => {
+    document.getElementById(s).classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
 }
