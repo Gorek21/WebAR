@@ -1,6 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
   const scenes = ["scene1", "scene2", "scene3", "scene4", "scene5"];
-  let current = 0;
 
   function showScene(id) {
     scenes.forEach(s => {
@@ -10,8 +9,8 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById(id).setAttribute("visible", true);
   }
 
-  // Präsentation starten bei Klick auf Scene1 Text
-  document.getElementById("scene1").addEventListener("click", () => {
+  // Klick-Event direkt auf die Plane (Button)
+  document.getElementById("startBtn").addEventListener("click", () => {
     startPresentation();
   });
 

@@ -17,25 +17,37 @@
 
     <!-- Assets -->
     <a-assets>
-      <a-asset-item id="impact" src="Impact.glb"></a-asset-item>
-      <a-asset-item id="orbitlogo1" src="bild1.glb"></a-asset-item>
-      <a-asset-item id="orbitlogo2" src="bild2.glb"></a-asset-item>
-      <a-asset-item id="orbitlogo3" src="bild3.glb"></a-asset-item>
-      <a-asset-item id="orbitlogo4" src="bild4.glb"></a-asset-item>
       <video id="promo" autoplay="false" loop="false" src="video.mp4"></video>
     </a-assets>
 
-    <!-- Szene 1: Button -->
-    <a-entity id="scene1" visible="true">
-      <a-text value="📱 Tippe um zu starten" align="center" position="0 1.5 -2" color="#FFFFFF"></a-text>
+    <!-- Szene 1: Start -->
+    <a-entity id="scene1" visible="true" class="clickable">
+      <!-- Hintergrundfläche des Buttons -->
+      <a-plane id="startBtn"
+              class="clickable"
+              position="0 1.5 -2"
+              width="2"
+              height="0.6"
+              color="#2222FF"
+              opacity="0.8">
+      </a-plane>
+
+      <!-- Text auf dem Button -->
+      <a-text value="📱 Tippe um zu starten"
+              align="center"
+              position="0 1.5 -1.99"
+              color="#FFFFFF"
+              width="3">
+      </a-text>
     </a-entity>
+
 
     <!-- Szene 2: Impact Logo -->
     <a-entity id="scene2" visible="false">
-      <a-entity gltf-model="#impact" position="0 1 -2" scale="0.5 0.5 0.5"></a-entity>
+      <a-image src="Impact.png" position="0 1 -2" width="1" height="1"></a-image>
     </a-entity>
 
-    <!-- Szene 3: Video auf MaltaTransparent-Plane -->
+    <!-- Szene 3: Video + Grafik -->
     <a-entity id="scene3" visible="false">
       <a-plane position="0 1.2 -2" width="1.5" height="1"
                material="src: #promo; transparent: true">
@@ -45,22 +57,30 @@
 
     <!-- Szene 4: Orbit Logos -->
     <a-entity id="scene4" visible="false">
-      <a-entity gltf-model="#impact" position="0 1 -2" scale="0.5 0.5 0.5"></a-entity>
+      <!-- Zentrales Impact-Logo -->
+      <a-image src="Impact.png" position="0 1 -2" width="1" height="1"></a-image>
+      <!-- Umlaufende Logos -->
       <a-entity id="orbitSystem" rotation="0 0 0">
-        <a-entity gltf-model="#orbitlogo1" position="2 1 -2" scale="0.2 0.2 0.2"></a-entity>
-        <a-entity gltf-model="#orbitlogo2" position="-2 1 -2" scale="0.2 0.2 0.2"></a-entity>
-        <a-entity gltf-model="#orbitlogo3" position="0 1 -4" scale="0.2 0.2 0.2"></a-entity>
-        <a-entity gltf-model="#orbitlogo4" position="0 1 0" scale="0.2 0.2 0.2"></a-entity>
+        <a-image src="bild1.png" position="2 1 -2" width="0.5" height="0.5"></a-image>
+        <a-image src="bild2.png" position="-2 1 -2" width="0.5" height="0.5"></a-image>
+        <a-image src="bild3.png" position="0 1 -4" width="0.5" height="0.5"></a-image>
+        <a-image src="bild4.png" position="0 1 0" width="0.5" height="0.5"></a-image>
       </a-entity>
     </a-entity>
 
     <!-- Szene 5: Abschluss -->
     <a-entity id="scene5" visible="false">
-      <a-text value="Ende der Präsentation" align="center" position="0 1.5 -2" color="#FFCC00"></a-text>
+      <a-text value="Ende der Präsentation"
+              align="center"
+              position="0 1.5 -2"
+              color="#FFCC00">
+      </a-text>
     </a-entity>
 
-    <!-- Kamera -->
-    <a-camera position="0 1.6 0"></a-camera>
+    <!-- Kamera mit Cursor -->
+    <a-camera position="0 1.6 0">
+      <a-cursor></a-cursor>
+    </a-camera>
   </a-scene>
 
   <script src="script.js"></script>
