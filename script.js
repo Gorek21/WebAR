@@ -1,61 +1,50 @@
-const scenes = ["scene1", "scene2", "scene3", "scene4"];
-let current = 0;
-const viewer = document.getElementById("viewer");
-const startBtn = document.getElementById("startButton");
+window.addEventListener("DOMContentLoaded", () => {
+  const scenes = ["scene1", "scene2", "scene3", "scene4", "scene5"];
+  let current = 0;
 
-// Prüfen, ob AR unterstützt wird
-const arSupported = 'xr' in navigator || viewer.canActivateAR;
+  function showScene(id) {
+    scenes.forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.setAttribute("visible", false);
+    });
+    document.getElementById(id).setAttribute("visible", true);
+  }
 
-if (arSupported) {
-  console.log("AR-Unterstützung erkannt.");
-
-  // Präsentation starten, wenn Button gedrückt wird und AR läuft
-  startBtn.addEventListener("click", () => {
-    if (viewer.arStatus === "session-started") {
-      startPresentation();
-    } else {
-      viewer.addEventListener("ar-status", (event) => {
-        if (event.detail.status === "session-started") {
-          startPresentation();
-        }
-      }, { once: true });
-    }
-  });
-} else {
-  console.log("Kein AR verfügbar – Fallback auf Desktop-Version.");
-
-  // Button bleibt sichtbar, startet Präsentation sofort ohne AR
-  startBtn.addEventListener("click", () => {
+  // Präsentation starten bei Klick auf Scene1 Text
+  document.getElementById("scene1").addEventListener("click", () => {
     startPresentation();
   });
-}
 
-function startPresentation() {
-  console.log("Präsentation startet...");
+  function startPresentation() {
+    console.log("Präsentation startet…");
+    showScene("scene2");
 
-  // Scene 2: Impact Logo
-  showScene("scene2");
-  setTimeout(() => {
-    // Scene 3: Video
-    showScene("scene3");
-    const vid = document.getElementById("scene3video");
-    vid.play();
-    vid.onended = () => {
-      setTimeout(() => {
-        // Scene 4: Orbit Logos
-        showScene("scene4");
+    // Szene 2: Impact Logo -> nach 5s weiter
+    setTimeout(() => {
+      showScene("scene3");
+      const vid = document.getElementById("promo");
+      vid.play();
+
+      // Warten bis Video fertig ist
+      vid.onended = () => {
         setTimeout(() => {
-          console.log("Präsentation beendet.");
-          // Scene 5 hier ergänzen
-        }, 15000);
-      }, 3000);
-    };
-  }, 5000);
-}
+          showScene("scene4");
 
-function showScene(id) {
-  scenes.forEach(s => {
-    document.getElementById(s).classList.remove("active");
-  });
-  document.getElementById(id).classList.add("active");
-}
+          // Orbit-Logos rotieren lassen
+          const orbit = document.getElementById("orbitSystem");
+          orbit.setAttribute("animation", {
+            property: "rotation",
+            to: "0 360 0",
+            loop: true,
+            dur: 15000
+          });
+
+          // Nach 15s weiter
+          setTimeout(() => {
+            showScene("scene5");
+          }, 15000);
+        }, 3000);
+      };
+    }, 5000);
+  }
+});

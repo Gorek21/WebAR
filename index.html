@@ -2,47 +2,66 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>AR Projekt Szenenablauf</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <title>AR Projekt Szenenablauf (A-Frame)</title>
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- A-Frame Szene -->
+  <a-scene
+    webxr="optionalFeatures: hit-test;"
+    renderer="colorManagement: true; physicallyCorrectLights: true;"
+    embedded
+    vr-mode-ui="enabled: false">
 
-  <!-- Scene 1: AR Button -->
-  <div id="scene1" class="scene active">
-    <model-viewer id="viewer" src="model.glb" ios-src="model.usdz" ar ar-modes="scene-viewer quick-look webxr">
-      <button id="startButton" slot="ar-button">📱 Präsentation starten</button>
-    </model-viewer>
-  </div>
+    <!-- Assets -->
+    <a-assets>
+      <a-asset-item id="impact" src="Impact.glb"></a-asset-item>
+      <a-asset-item id="orbitlogo1" src="bild1.glb"></a-asset-item>
+      <a-asset-item id="orbitlogo2" src="bild2.glb"></a-asset-item>
+      <a-asset-item id="orbitlogo3" src="bild3.glb"></a-asset-item>
+      <a-asset-item id="orbitlogo4" src="bild4.glb"></a-asset-item>
+      <video id="promo" autoplay="false" loop="false" src="video.mp4"></video>
+    </a-assets>
 
-  <!-- Scene 2: Logo -->
-  <div id="scene2" class="scene">
-    <img src="Impact.png" alt="Logo" class="logo">
-  </div>
+    <!-- Szene 1: Button -->
+    <a-entity id="scene1" visible="true">
+      <a-text value="📱 Tippe um zu starten" align="center" position="0 1.5 -2" color="#FFFFFF"></a-text>
+    </a-entity>
 
-  <!-- Scene 3: Video + Text -->
-  <div id="scene3" class="scene">
-    <div class="scene3-content">
-      <video id="scene3video" src="video.mp4" controls></video>
-      <div class="info">
-        <img src="MaltaTransparent.png" alt="Grafik">
-        <p>Dein Beschreibungstext zum Video</p>
-      </div>
-    </div>
-  </div>
+    <!-- Szene 2: Impact Logo -->
+    <a-entity id="scene2" visible="false">
+      <a-entity gltf-model="#impact" position="0 1 -2" scale="0.5 0.5 0.5"></a-entity>
+    </a-entity>
 
-  <!-- Scene 4: Orbit-Animation -->
-  <div id="scene4" class="scene">
-    <div class="orbit-wrapper">
-      <img src="Impact.png" alt="Zentrales Logo" class="logo">
-      <div class="orbit-container">
-        <img src="bild1.png" alt="Bild 1">
-        <img src="bild2.png" alt="Bild 2">
-        <img src="bild3.png" alt="Bild 3">
-        <img src="bild4.png" alt="Bild 4">
-      </div>
-    </div>
-  </div>
+    <!-- Szene 3: Video auf MaltaTransparent-Plane -->
+    <a-entity id="scene3" visible="false">
+      <a-plane position="0 1.2 -2" width="1.5" height="1"
+               material="src: #promo; transparent: true">
+      </a-plane>
+      <a-image src="MaltaTransparent.png" position="0 0.2 -2" width="1" height="1"></a-image>
+    </a-entity>
+
+    <!-- Szene 4: Orbit Logos -->
+    <a-entity id="scene4" visible="false">
+      <a-entity gltf-model="#impact" position="0 1 -2" scale="0.5 0.5 0.5"></a-entity>
+      <a-entity id="orbitSystem" rotation="0 0 0">
+        <a-entity gltf-model="#orbitlogo1" position="2 1 -2" scale="0.2 0.2 0.2"></a-entity>
+        <a-entity gltf-model="#orbitlogo2" position="-2 1 -2" scale="0.2 0.2 0.2"></a-entity>
+        <a-entity gltf-model="#orbitlogo3" position="0 1 -4" scale="0.2 0.2 0.2"></a-entity>
+        <a-entity gltf-model="#orbitlogo4" position="0 1 0" scale="0.2 0.2 0.2"></a-entity>
+      </a-entity>
+    </a-entity>
+
+    <!-- Szene 5: Abschluss -->
+    <a-entity id="scene5" visible="false">
+      <a-text value="Ende der Präsentation" align="center" position="0 1.5 -2" color="#FFCC00"></a-text>
+    </a-entity>
+
+    <!-- Kamera -->
+    <a-camera position="0 1.6 0"></a-camera>
+  </a-scene>
 
   <script src="script.js"></script>
 </body>
