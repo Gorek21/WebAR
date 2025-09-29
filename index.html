@@ -8,31 +8,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- A-Frame Szene -->
+  <!-- A-Frame Szene (nur für Android/WebXR) -->
   <a-scene
-    webxr="optionalFeatures: hit-test;"
+    webxr="requiredFeatures: hit-test; optionalFeatures: dom-overlay;"
     renderer="colorManagement: true; physicallyCorrectLights: true;"
-    embedded
     vr-mode-ui="enabled: false">
 
     <!-- Assets -->
     <a-assets>
+      <a-asset-item id="mainModel" src="model.glb"></a-asset-item>
       <video id="promo" autoplay="false" loop="false" src="video.mp4"></video>
     </a-assets>
 
-    <!-- Szene 1: Start -->
-    <a-entity id="scene1" visible="true" class="clickable">
-      <!-- Hintergrundfläche des Buttons -->
+    <!-- Szene 1: Start-Button -->
+    <a-entity id="scene1" visible="true">
       <a-plane id="startBtn"
-              class="clickable"
-              position="0 1.5 -2"
-              width="2"
-              height="0.6"
-              color="#2222FF"
-              opacity="0.8">
+               position="0 1.5 -2"
+               width="2"
+               height="0.6"
+               color="#2222FF"
+               opacity="0.8">
       </a-plane>
-
-      <!-- Text auf dem Button -->
       <a-text value="📱 Tippe um zu starten"
               align="center"
               position="0 1.5 -1.99"
@@ -41,10 +37,14 @@
       </a-text>
     </a-entity>
 
-
     <!-- Szene 2: Impact Logo -->
     <a-entity id="scene2" visible="false">
-      <a-image src="Impact.png" position="0 1 -2" width="1" height="1"></a-image>
+      <a-image src="Impact.png" position="0 1 -2" width="1" height="1"></a-image> 
+      <a-entity id="impactModel"
+                gltf-model="#mainModel"
+                scale="0.3 0.3 0.3"
+                visible="false">
+      </a-entity>
     </a-entity>
 
     <!-- Szene 3: Video + Grafik -->
@@ -57,9 +57,7 @@
 
     <!-- Szene 4: Orbit Logos -->
     <a-entity id="scene4" visible="false">
-      <!-- Zentrales Impact-Logo -->
       <a-image src="Impact.png" position="0 1 -2" width="1" height="1"></a-image>
-      <!-- Umlaufende Logos -->
       <a-entity id="orbitSystem" rotation="0 0 0">
         <a-image src="bild1.png" position="2 1 -2" width="0.5" height="0.5"></a-image>
         <a-image src="bild2.png" position="-2 1 -2" width="0.5" height="0.5"></a-image>
@@ -77,11 +75,18 @@
       </a-text>
     </a-entity>
 
-    <!-- Kamera mit Cursor -->
+    <!-- Kamera -->
     <a-camera position="0 1.6 0">
       <a-cursor></a-cursor>
     </a-camera>
   </a-scene>
+
+  <!-- Fallback für iOS QuickLook -->
+  <div id="ios-ar-button">
+    <a rel="ar" href="model.usdz">
+      <img src="Impact.png" alt="In AR ansehen" style="width:200px;">
+    </a>
+  </div>
 
   <script src="script.js"></script>
 </body>

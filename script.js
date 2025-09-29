@@ -1,3 +1,16 @@
+// Komponente: platziert Modell per Hit-Test
+AFRAME.registerComponent('place-on-hit', {
+  init: function () {
+    const el = this.el;
+    const sceneEl = this.el.sceneEl;
+
+    sceneEl.addEventListener('ar-hit-test-select', (e) => {
+      el.setAttribute('position', e.detail.position);
+      el.setAttribute('visible', true);
+    });
+  }
+});
+
 window.addEventListener("DOMContentLoaded", () => {
   const scenes = ["scene1", "scene2", "scene3", "scene4", "scene5"];
 
@@ -9,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById(id).setAttribute("visible", true);
   }
 
-  // Klick-Event direkt auf die Plane (Button)
+  // Start-Button
   document.getElementById("startBtn").addEventListener("click", () => {
     startPresentation();
   });
@@ -18,18 +31,21 @@ window.addEventListener("DOMContentLoaded", () => {
     console.log("Präsentation startet…");
     showScene("scene2");
 
-    // Szene 2: Impact Logo -> nach 5s weiter
+    // Impact-Modell aktivieren (mit AR-Hit-Test)
+    const impactModel = document.getElementById("impactModel");
+    impactModel.setAttribute("place-on-hit", "");
+
+    // Szene 2 für 5 Sekunden
     setTimeout(() => {
       showScene("scene3");
       const vid = document.getElementById("promo");
       vid.play();
 
-      // Warten bis Video fertig ist
       vid.onended = () => {
         setTimeout(() => {
           showScene("scene4");
 
-          // Orbit-Logos rotieren lassen
+          // Orbit-Logos rotieren
           const orbit = document.getElementById("orbitSystem");
           orbit.setAttribute("animation", {
             property: "rotation",
@@ -38,12 +54,20 @@ window.addEventListener("DOMContentLoaded", () => {
             dur: 15000
           });
 
-          // Nach 15s weiter
           setTimeout(() => {
             showScene("scene5");
           }, 15000);
         }, 3000);
       };
     }, 5000);
+  }
+
+  // iOS QuickLook Fallback
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isIOS) {
+    document.querySelector("a-scene").style.display = "none";
+    document.getElementById("ios-ar-button").style.display = "block";
+  } else {
+    document.getElementById("ios-ar-button").style.display = "none";
   }
 });
